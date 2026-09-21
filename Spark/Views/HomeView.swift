@@ -4,7 +4,9 @@ struct HomeView: View {
     @EnvironmentObject private var gameStore: GameStore
     @State private var showOutfit = false
     @State private var showIntimacy = false
+    @State private var showIntimacyScene = false
     @State private var showChatTopics = false
+    @State private var showRoomPicker = false
 
     var body: some View {
         if let character = gameStore.state.character {
@@ -16,8 +18,11 @@ struct HomeView: View {
                     topBar(character)
                     ScrollView {
                         VStack(spacing: 12) {
-                            CharacterPortraitView(character: character)
-                                .padding(.top, 8)
+                            CharacterPortraitView(
+                                character: character,
+                                isSpeaking: isCharacterSpeaking
+                            )
+                            .padding(.top, 8)
 
                             statsStrip(character)
 
@@ -25,9 +30,10 @@ struct HomeView: View {
                                 .frame(minHeight: 160, maxHeight: 220)
 
                             ActionBar(
+                                timeOfDay: gameStore.state.timeOfDay,
                                 onAction: handleAction,
                                 onOutfit: { showOutfit = true },
-                                onRoomToggle: toggleRoom
+                                onPickRoom: { showRoomPicker = true }
                             )
                         }
                         .padding(.horizontal)
@@ -52,7 +58,12 @@ struct HomeView: View {
                     showOutfit = false
                 }
             }
+            .sheet(isPresented: $showIntimacyScene) {
+                IntimacyView()
+                    .environmentObject(gameStore)
+            }
             .confirmationDialog("亲密互动", isPresented: $showIntimacy, titleVisibility: .visible) {
+                Button("进入亲密场景（推荐）") { showIntimacyScene = true }
                 ForEach(IntimacyAction.allCases) { action in
                     Button(action.displayName) {
                         gameStore.performIntimacy(action)
@@ -60,27 +71,35 @@ struct HomeView: View {
                 }
                 Button("取消", role: .cancel) {}
             } message: {
-                Text("当前档位：\(character.stats.intimacyTier.displayName)")
+                Text("当前档位：\(character.stats.intimacyTier.displayName) · \(gameStore.state.timeOfDay.displayName)")
             }
             .confirmationDialog("聊什么？", isPresented: $showChatTopics, titleVisibility: .visible) {
-                ForEach(topics) { topic in
+                ForEach(topics(for: character)) { topic in
                     Button(topic.title) {
                         gameStore.sendChat(topic: topic)
                     }
                 }
                 Button("取消", role: .cancel) {}
             }
+            .confirmationDialog("去哪个房间？", isPresented: $showRoomPicker, titleVisibility: .visible) {
+                ForEach(RoomScene.allCases) { room in
+                    Button("\(room.displayName)") {
+                        gameStore.switchRoom(room)
+                    }
+                }
+                Button("取消", role: .cancel) {}
+            } message: {
+                Text(character.currentRoom.blurb)
+            }
         }
     }
 
-    private var topics: [ChatTopic] {
-        [
-            ChatTopic(id: "1", title: "今天过得怎么样？", category: .daily),
-            ChatTopic(id: "2", title: "聊聊手冲咖啡", category: .hobby),
-            ChatTopic(id: "3", title: "想听你的感受", category: .feelings),
-            ChatTopic(id: "4", title: "你以前的生活", category: .past),
-            ChatTopic(id: "5", title: "你今天很好看", category: .flirt)
-        ]
+    private var isCharacterSpeaking: Bool {
+        gameStore.chatLog.last?.speaker == .character
+    }
+
+    private func topics(for character: Character) -> [ChatTopic] {
+        ChatTopic.topics(for: gameStore.state.timeOfDay, likes: character.likes, intimacyTier: character.stats.intimacyTier, arousal: character.stats.arousal)
     }
 
     private func handleAction(_ action: CareAction) {
@@ -88,16 +107,14 @@ struct HomeView: View {
         case .chat:
             showChatTopics = true
         case .intimacy:
-            showIntimacy = true
+            if gameStore.openIntimacySceneAllowed() {
+                showIntimacyScene = true
+            } else {
+                showIntimacy = true
+            }
         default:
             gameStore.perform(action)
         }
-    }
-
-    private func toggleRoom() {
-        guard let c = gameStore.state.character else { return }
-        let next: RoomScene = c.currentRoom == .livingRoom ? .bedroom : .livingRoom
-        gameStore.switchRoom(next)
     }
 
     private func topBar(_ c: Character) -> some View {
@@ -105,13 +122,13 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(c.name)
                     .font(.headline)
-                Text("\(c.age) 岁 · \(c.occupation) · 第 \(gameStore.state.day) 天 · \(gameStore.state.timeOfDay.displayName)")
+                Text("\(c.age) 岁 · \(c.occupation) · 第 \(gameStore.state.day) 天 · \(gameStore.state.timeOfDay.emoji)\(gameStore.state.timeOfDay.displayName) · \(c.currentRoom.displayName)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Spacer()
             Menu {
-                Button("切换房间") { toggleRoom() }
+                Button("切换房间") { showRoomPicker = true }
                 Button("换装") { showOutfit = true }
                 Divider()
                 Button("重置存档", role: .destructive) {
@@ -140,7 +157,7 @@ struct HomeView: View {
                 statLabel("精力", c.stats.energy, .green)
                 statLabel("饥饿", c.stats.hunger, .brown)
             }
-            Text("喜好：\(c.likes.joined(separator: "、"))")
+            Text("喜好：\(c.likes.joined(separator: "、")) · 礼物×\(gameStore.state.inventoryGifts)")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
         }
@@ -176,6 +193,18 @@ struct HomeView: View {
                     colors: [Color(red: 0.20, green: 0.16, blue: 0.28), Color(red: 0.40, green: 0.22, blue: 0.35)],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
+                )
+            case .kitchen:
+                LinearGradient(
+                    colors: [Color(red: 1.0, green: 0.97, blue: 0.88), Color(red: 0.95, green: 0.90, blue: 0.78)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            case .bathroomDoor:
+                LinearGradient(
+                    colors: [Color(red: 0.88, green: 0.94, blue: 0.96), Color(red: 0.78, green: 0.86, blue: 0.92)],
+                    startPoint: .top,
+                    endPoint: .bottom
                 )
             }
         }

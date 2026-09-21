@@ -145,7 +145,6 @@ struct IntimacyView: View {
             session.refused = true
             return
         }
-        // 进入场景：倾向卧室
         character.currentRoom = .bedroom
         gameStore.applyIntimacyCharacter(character)
         let beat = engine.beat(for: .kiss, character: character)
@@ -171,7 +170,6 @@ struct IntimacyView: View {
         }
         let nextBeat = engine.beat(for: session.step, character: character)
         currentBeat = nextBeat
-        // 展示下一步开场（若刚前进）
         if choice.kind == .advance || choice.kind == .soft {
             log.append(DialogueLine(speaker: .system, text: nextBeat.narration))
             log.append(DialogueLine(speaker: .character, text: nextBeat.herLine))
