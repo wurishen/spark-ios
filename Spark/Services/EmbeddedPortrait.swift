@@ -6,9 +6,18 @@ import UIKit
 /// 从 Bundle 文本资源加载日漫立ち絵（casual / lingerie）
 enum EmbeddedPortrait {
     private static func loadB64(_ name: String) -> String? {
-        guard let url = Bundle.main.url(forResource: name, withExtension: "b64.txt"),
-              let s = try? String(contentsOf: url, encoding: .utf8) else { return nil }
-        return s.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let url = Bundle.main.url(forResource: name, withExtension: "b64.txt"),
+           let s = try? String(contentsOf: url, encoding: .utf8) {
+            let t = s.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !t.isEmpty { return t }
+        }
+        var acc = ""
+        for i in 0..<8 {
+            guard let url = Bundle.main.url(forResource: "\(name).b64.part\(i)", withExtension: "txt"),
+                  let s = try? String(contentsOf: url, encoding: .utf8) else { break }
+            acc += s.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return acc.isEmpty ? nil : acc
     }
 
     private static func image(named resource: String) -> Image? {
