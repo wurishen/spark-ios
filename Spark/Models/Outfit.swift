@@ -3,11 +3,11 @@ import SwiftUI
 
 /// 服装分层状态：由外到内渐进脱衣，受好感/信任门控
 enum OutfitState: String, Codable, CaseIterable, Identifiable {
-    case outdoor   // 外出装
-    case casual    // 便装
-    case home      // 居家服
-    case underwear // 内衣
-    case nude      // 裸身剪影（非写实器官特写）
+    case outdoor
+    case casual
+    case home
+    case underwear
+    case nude
 
     var id: String { rawValue }
 
@@ -31,7 +31,6 @@ enum OutfitState: String, Codable, CaseIterable, Identifiable {
         }
     }
 
-    /// 切换到该服装所需最低好感 / 信任
     var requiredAffection: Double {
         switch self {
         case .outdoor, .casual, .home: return 0
@@ -64,7 +63,6 @@ enum OutfitState: String, Codable, CaseIterable, Identifiable {
         self == .nude
     }
 
-    /// 外层服装色（程序化占位）
     var clothColor: Color {
         switch self {
         case .outdoor: return Color(red: 0.25, green: 0.35, blue: 0.55)
@@ -76,7 +74,7 @@ enum OutfitState: String, Codable, CaseIterable, Identifiable {
 }
 
 struct AppearancePalette: Codable, Equatable {
-    var skinTone: String   // hex
+    var skinTone: String
     var hairColor: String
     var eyeColor: String
     var underwearColor: String

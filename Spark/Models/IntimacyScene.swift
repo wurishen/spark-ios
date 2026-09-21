@@ -29,7 +29,6 @@ enum IntimacyStep: Int, Codable, CaseIterable, Comparable {
         }
     }
 
-    /// 进入该步建议的最低兴奋
     var minArousal: Double {
         switch self {
         case .kiss: return 10
@@ -70,7 +69,6 @@ struct IntimacyBeat {
     var deltaEnergy: Double
 }
 
-/// 进行中的亲密会话（非持久化 UI 状态；结束后写回角色数值）
 struct IntimacySession: Equatable {
     var step: IntimacyStep
     var beatsCompleted: Int

@@ -2,12 +2,12 @@ import Foundation
 
 /// 角色核心数值（全部 0–100）
 struct CharacterStats: Codable, Equatable {
-    var mood: Double      // 心情
-    var affection: Double // 好感
-    var trust: Double     // 信任
-    var arousal: Double   // 亲密度/兴奋（亲密系统用）
-    var energy: Double    // 精力
-    var hunger: Double    // 饥饿（越高越饿）
+    var mood: Double
+    var affection: Double
+    var trust: Double
+    var arousal: Double
+    var energy: Double
+    var hunger: Double
 
     static let starter = CharacterStats(
         mood: 55,
@@ -27,7 +27,6 @@ struct CharacterStats: Codable, Equatable {
         hunger = min(100, max(0, hunger))
     }
 
-    /// 亲密动作解锁档位
     var intimacyTier: IntimacyTier {
         if affection >= 70 && trust >= 65 { return .deep }
         if affection >= 45 && trust >= 40 { return .close }
