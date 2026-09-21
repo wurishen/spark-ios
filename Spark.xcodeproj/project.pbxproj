@@ -24,6 +24,12 @@
 		C00000000000000000000015 /* ActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000015 /* ActionBar.swift */; };
 		C00000000000000000000016 /* ChatPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000016 /* ChatPanel.swift */; };
 		A10000000000000000000021 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000020 /* Assets.xcassets */; };
+		C00000000000000000000017 /* EmbeddedPortrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000017 /* EmbeddedPortrait.swift */; };
+		C00000000000000000000018 /* IntimacyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000018 /* IntimacyScene.swift */; };
+		C00000000000000000000019 /* IntimacySceneEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000019 /* IntimacySceneEngine.swift */; };
+		C0000000000000000000001A /* IntimacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001A /* IntimacyView.swift */; };
+		C0000000000000000000001B /* casual.b64.txt in Resources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001B /* casual.b64.txt */; };
+		C0000000000000000000001C /* lingerie.b64.txt in Resources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001C /* lingerie.b64.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +53,12 @@
 		B00000000000000000000016 /* ChatPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPanel.swift; sourceTree = "<group>"; };
 		A10000000000000000000020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A10000000000000000000022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B00000000000000000000017 /* EmbeddedPortrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedPortrait.swift; sourceTree = "<group>"; };
+		B00000000000000000000018 /* IntimacyScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntimacyScene.swift; sourceTree = "<group>"; };
+		B00000000000000000000019 /* IntimacySceneEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntimacySceneEngine.swift; sourceTree = "<group>"; };
+		B0000000000000000000001A /* IntimacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntimacyView.swift; sourceTree = "<group>"; };
+		B0000000000000000000001B /* casual.b64.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = casual.b64.txt; sourceTree = "<group>"; };
+		B0000000000000000000001C /* lingerie.b64.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = lingerie.b64.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +98,8 @@
 				A10000000000000000000013 /* Views */,
 				A10000000000000000000020 /* Assets.xcassets */,
 				A10000000000000000000022 /* Info.plist */,
+				B0000000000000000000001C /* lingerie.b64.txt */,
+				B0000000000000000000001B /* casual.b64.txt */,
 			);
 			path = Spark;
 			sourceTree = "<group>";
@@ -98,6 +112,7 @@
 				B00000000000000000000004 /* Outfit.swift */,
 				B00000000000000000000005 /* Dialogue.swift */,
 				B00000000000000000000006 /* GameState.swift */,
+				B00000000000000000000018 /* IntimacyScene.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -107,7 +122,9 @@
 			children = (
 				B00000000000000000000007 /* CharacterGenerator.swift */,
 				B00000000000000000000008 /* DialogueEngine.swift */,
+				B00000000000000000000019 /* IntimacySceneEngine.swift */,
 				B00000000000000000000009 /* PersistenceService.swift */,
+				B00000000000000000000017 /* EmbeddedPortrait.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -122,6 +139,7 @@
 				B00000000000000000000014 /* OutfitSheet.swift */,
 				B00000000000000000000015 /* ActionBar.swift */,
 				B00000000000000000000016 /* ChatPanel.swift */,
+				B0000000000000000000001A /* IntimacyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -186,6 +204,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000021 /* Assets.xcassets in Resources */,
+				C0000000000000000000001C /* lingerie.b64.txt in Resources */,
+				C0000000000000000000001B /* casual.b64.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,9 +223,12 @@
 				C00000000000000000000004 /* Outfit.swift in Sources */,
 				C00000000000000000000005 /* Dialogue.swift in Sources */,
 				C00000000000000000000006 /* GameState.swift in Sources */,
+				C00000000000000000000018 /* IntimacyScene.swift in Sources */,
 				C00000000000000000000007 /* CharacterGenerator.swift in Sources */,
 				C00000000000000000000008 /* DialogueEngine.swift in Sources */,
+				C00000000000000000000019 /* IntimacySceneEngine.swift in Sources */,
 				C00000000000000000000009 /* PersistenceService.swift in Sources */,
+				C00000000000000000000017 /* EmbeddedPortrait.swift in Sources */,
 				C00000000000000000000010 /* AgeGateView.swift in Sources */,
 				C00000000000000000000011 /* CharacterIntroView.swift in Sources */,
 				C00000000000000000000012 /* HomeView.swift in Sources */,
@@ -213,6 +236,7 @@
 				C00000000000000000000014 /* OutfitSheet.swift in Sources */,
 				C00000000000000000000015 /* ActionBar.swift in Sources */,
 				C00000000000000000000016 /* ChatPanel.swift in Sources */,
+				C0000000000000000000001A /* IntimacyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +296,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wurishen.spark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -299,7 +323,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wurishen.spark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
