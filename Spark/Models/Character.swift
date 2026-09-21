@@ -1,10 +1,9 @@
 import Foundation
 
-/// 成年室友/伴侣角色（强制 22–32 岁）
 struct Character: Codable, Identifiable, Equatable {
     let id: UUID
     var name: String
-    var age: Int              // 必须 22–32
+    var age: Int
     var occupation: String
     var personalityTraits: [PersonalityTrait]
     var likes: [String]
@@ -50,14 +49,14 @@ struct Character: Codable, Identifiable, Equatable {
 }
 
 enum PersonalityTrait: String, Codable, CaseIterable {
-    case gentle      // 温柔
-    case cheerful    // 开朗
-    case shy         // 害羞
-    case witty       // 俏皮
-    case caring      // 体贴
-    case independent // 独立
-    case romantic    // 浪漫
-    case playful     // 爱玩
+    case gentle
+    case cheerful
+    case shy
+    case witty
+    case caring
+    case independent
+    case romantic
+    case playful
 
     var displayName: String {
         switch self {
@@ -73,14 +72,38 @@ enum PersonalityTrait: String, Codable, CaseIterable {
     }
 }
 
-enum RoomScene: String, Codable, CaseIterable {
+enum RoomScene: String, Codable, CaseIterable, Identifiable {
     case livingRoom
     case bedroom
+    case kitchen
+    case bathroomDoor
+
+    var id: String { rawValue }
 
     var displayName: String {
         switch self {
         case .livingRoom: return "客厅"
         case .bedroom: return "卧室"
+        case .kitchen: return "厨房"
+        case .bathroomDoor: return "浴室门口"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .livingRoom: return "sofa.fill"
+        case .bedroom: return "bed.double.fill"
+        case .kitchen: return "cooktop.fill"
+        case .bathroomDoor: return "door.left.hand.closed"
+        }
+    }
+
+    var blurb: String {
+        switch self {
+        case .livingRoom: return "阳光与沙发，日常聊天的地方"
+        case .bedroom: return "柔软的床铺，适合休息与亲密"
+        case .kitchen: return "锅碗瓢盆与咖啡香"
+        case .bathroomDoor: return "梳妆台与半掩的门——礼貌地等候"
         }
     }
 }
