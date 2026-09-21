@@ -3,16 +3,26 @@ import SwiftUI
 import UIKit
 #endif
 
-/// 从 Bundle 文本资源加载日漫立ち絵（casual / lingerie）
+/// 从 Bundle / 内嵌常量加载日漫立ち絵（casual / lingerie）
 enum EmbeddedPortrait {
     private static func loadB64(_ name: String) -> String? {
+        switch name {
+        case "casual":
+            let v = CasualArtB64.value
+            if !v.isEmpty { return v }
+        case "lingerie":
+            let v = LingerieArtB64.value
+            if !v.isEmpty { return v }
+        default:
+            break
+        }
         if let url = Bundle.main.url(forResource: name, withExtension: "b64.txt"),
            let s = try? String(contentsOf: url, encoding: .utf8) {
             let t = s.trimmingCharacters(in: .whitespacesAndNewlines)
             if !t.isEmpty { return t }
         }
         var acc = ""
-        for i in 0..<8 {
+        for i in 0..<16 {
             guard let url = Bundle.main.url(forResource: "\(name).b64.part\(i)", withExtension: "txt"),
                   let s = try? String(contentsOf: url, encoding: .utf8) else { break }
             acc += s.trimmingCharacters(in: .whitespacesAndNewlines)
