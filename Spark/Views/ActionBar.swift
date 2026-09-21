@@ -1,16 +1,29 @@
 import SwiftUI
 
 struct ActionBar: View {
+    var timeOfDay: TimeOfDay
     var onAction: (CareAction) -> Void
     var onOutfit: () -> Void
-    var onRoomToggle: () -> Void
+    var onPickRoom: () -> Void
 
     private let actions: [CareAction] = [.chat, .cook, .gift, .rest, .goOut, .intimacy]
 
     var body: some View {
         VStack(spacing: 10) {
+            HStack {
+                Text("\(timeOfDay.emoji) \(timeOfDay.displayName)")
+                    .font(.caption.bold())
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text(timeOfDay.unavailableHint)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+            }
+
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 3), spacing: 8) {
                 ForEach(actions) { action in
+                    let enabled = timeOfDay.isActionAvailable(action)
                     Button {
                         onAction(action)
                     } label: {
@@ -21,10 +34,12 @@ struct ActionBar: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(action == .intimacy ? Color.pink.opacity(0.85) : Color.white.opacity(0.9))
-                        .foregroundStyle(action == .intimacy ? .white : .primary)
+                        .background(bg(action, enabled: enabled))
+                        .foregroundStyle(fg(action, enabled: enabled))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .opacity(enabled ? 1 : 0.45)
                     }
+                    .disabled(!enabled && action != .intimacy)
                 }
             }
 
@@ -40,9 +55,9 @@ struct ActionBar: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 Button {
-                    onRoomToggle()
+                    onPickRoom()
                 } label: {
-                    Label("切换房间", systemImage: "door.left.hand.open")
+                    Label("房间", systemImage: "door.left.hand.open")
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
                         .background(Color.teal.opacity(0.85))
@@ -51,5 +66,15 @@ struct ActionBar: View {
                 }
             }
         }
+    }
+
+    private func bg(_ action: CareAction, enabled: Bool) -> Color {
+        if action == .intimacy { return Color.pink.opacity(enabled ? 0.85 : 0.4) }
+        return Color.white.opacity(0.9)
+    }
+
+    private func fg(_ action: CareAction, enabled: Bool) -> Color {
+        if action == .intimacy { return .white }
+        return .primary
     }
 }
