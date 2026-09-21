@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import Darwin
 
 /// 日漫立ち絵 + SwiftUI live idle。便装/居家→casual；内衣→lingerie；裸身→程序化柔和剪影。
 struct CharacterPortraitView: View {
@@ -98,8 +99,8 @@ struct CharacterPortraitView: View {
         .allowsHitTesting(false)
     }
 
-    private var breathScale: CGFloat { 1.0 + 0.015 * (0.5 + 0.5 * sin(breathPhase)) }
-    private var swayDegrees: Double { Double(2.0 * sin(swayPhase)) }
+    private var breathScale: CGFloat { 1.0 + 0.015 * (0.5 + 0.5 * Darwin.sin(Double(breathPhase))) }
+    private var swayDegrees: Double { Double(2.0 * Darwin.sin(Double(swayPhase))) }
 
     private func startIdleLoops() {
         withAnimation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true)) { breathPhase = .pi }
@@ -225,7 +226,7 @@ struct CharacterPortraitView: View {
             let eyeY = h * 0.16
             for dx in [w * 0.40, w * 0.54] {
                 context.fill(Path(ellipseIn: CGRect(x: dx, y: eyeY, width: 14, height: 16)), with: .color(eyes))
-                context.fill(Path(ellipseIn: CGRect(x: dx + 3, y: eyeY + 2, width: 4, height: 5)), with: .color(.white.opacity(0.85)))
+                context.fill(Path(ellipseIn: CGRect(x: dx + 3, y: eyeY + 2, width: 4, height: 5)), with: .color(Color.white.opacity(0.85)))
             }
             let mouthH: CGFloat = isSpeaking ? 6 : 4
             context.fill(Path(roundedRect: CGRect(x: w * 0.46, y: h * 0.24, width: 12, height: mouthH), cornerRadius: 2), with: .color(Color.pink.opacity(0.75)))

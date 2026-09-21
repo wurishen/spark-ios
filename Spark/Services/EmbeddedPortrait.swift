@@ -20,31 +20,36 @@ enum EmbeddedPortrait {
         return acc.isEmpty ? nil : acc
     }
 
-    private static func image(named resource: String) -> Image? {
+    static var casualImage: Image? {
         #if canImport(UIKit)
-        guard let b64 = loadB64(resource), let data = Data(base64Encoded: b64), let ui = UIImage(data: data) else { return nil }
-        return Image(uiImage: ui)
+        return decodeImage(named: "casual")
         #else
         return nil
         #endif
     }
 
-    static var casualImage: Image? { image(named: "casual") }
-    static var lingerieImage: Image? { image(named: "lingerie") }
-    static var casualUIImage: UIImage? {
+    static var lingerieImage: Image? {
         #if canImport(UIKit)
+        return decodeImage(named: "lingerie")
+        #else
+        return nil
+        #endif
+    }
+
+    #if canImport(UIKit)
+    private static func decodeImage(named resource: String) -> Image? {
+        guard let b64 = loadB64(resource), let data = Data(base64Encoded: b64), let ui = UIImage(data: data) else { return nil }
+        return Image(uiImage: ui)
+    }
+
+    static var casualUIImage: UIImage? {
         guard let b64 = loadB64("casual"), let data = Data(base64Encoded: b64) else { return nil }
         return UIImage(data: data)
-        #else
-        return nil
-        #endif
     }
+
     static var lingerieUIImage: UIImage? {
-        #if canImport(UIKit)
         guard let b64 = loadB64("lingerie"), let data = Data(base64Encoded: b64) else { return nil }
         return UIImage(data: data)
-        #else
-        return nil
-        #endif
     }
+    #endif
 }
